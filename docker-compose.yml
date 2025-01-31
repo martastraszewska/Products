@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  cassandra:
+    image: cassandra:4.1.0
+    ports:
+      - "9042:9042"
+    networks:
+      - cassandra_network
+
+  cassandra_temp:
+    image: cassandra:4.1.0
+    volumes:
+      - ./scripts/bash:/docker-entrypoint.sh
+      - ./scripts/cql:/tmp/cql
+    networks:
+      - cassandra_network
+    command: >
+      bash ./docker-entrypoint.sh/execute-cql.sh
+
+networks:
+  cassandra_network:
